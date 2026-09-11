@@ -8,8 +8,6 @@ services:
       MYSQL_DATABASE: prep2getherdb
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -45,8 +43,7 @@ services:
       PORTONE_API_SECRET: ${PORTONE_API_SECRET}
       PORTONE_WEBHOOK_SECRET: ${PORTONE_WEBHOOK_SECRET}
       PORTONE_BILLING_KEY_SECRET: ${PORTONE_BILLING_KEY_SECRET}
-    ports:
-      - "8080:8080"
+    # 8080은 호스트에 노출하지 않는다 — frontend의 nginx가 /api를 이 컨테이너로 프록시한다.
 
   frontend:
     build: ./frontend
@@ -57,6 +54,8 @@ services:
       - backend
     ports:
       - "80:80"
+    volumes:
+      - ./certbot/www:/var/www/certbot:ro
 
 volumes:
   mysql_data:
