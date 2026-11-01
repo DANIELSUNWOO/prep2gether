@@ -7,7 +7,6 @@ import org.example.backend.auth.security.CustomUserDetails;
 import org.example.backend.common.dto.ApiResponse;
 import org.example.backend.subscription.dto.response.SubscriptionResponse;
 import org.example.backend.subscription.service.SubscriptionService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +18,9 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @Operation(summary = "구독 신청", description = "프론트에서 결제 성공 처리 후 호출. 현재는 실제 PG 연동 없이 상태만 반영함.")
-    @PostMapping("/api/subscriptions")
-    public ResponseEntity<ApiResponse<SubscriptionResponse>> subscribe(
-            @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        SubscriptionResponse response = subscriptionService.subscribe(userDetails.getUser().getId());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success("구독이 시작되었습니다.", response));
-    }
+    // 구독 시작은 결제 검증을 통과한 경로에서만 일어나야 하므로 별도 엔드포인트를 두지 않는다.
+    // PortOne 연동 이전에 쓰던 POST /api/subscriptions는 결제 확인 없이 구독을 만들어 주는 통로였기에 제거했다.
+    // 지금은 PaymentService가 결제 단건 재조회로 검증한 뒤 SubscriptionService.subscribe()를 직접 호출한다.
 
     @Operation(summary = "구독 해지", description = "다음 회차 자동 갱신만 멈춘다. 만료일까지는 계속 이용할 수 있다.")
     @DeleteMapping("/api/subscriptions")
