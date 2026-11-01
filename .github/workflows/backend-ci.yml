@@ -64,7 +64,8 @@ jobs:
             channel-key-payment: channel-key-ci-payment
             channel-key-billing: channel-key-ci-billing
             api-secret: ci-api-secret-not-real
-            webhook-secret: "whsec_Y2ktZHVtbXktd2ViaG9vay1zZWNyZXQtMzJieXRlcyE="            billing-key-secret: ci-billing-key-secret-not-real
+            webhook-secret: "whsec_Y2ktZHVtbXktd2ViaG9vay1zZWNyZXQtMzJieXRlcyE="
+            billing-key-secret: ci-billing-key-secret-not-real
             payment-id-prefix: ci-test-
             test-mode: true
             subscription:
